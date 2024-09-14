@@ -1,0 +1,51 @@
+{
+  "name": "blog",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@editorjs/code": "^2.9.0",
+    "@editorjs/editorjs": "^2.30.5",
+    "@editorjs/embed": "^2.7.4",
+    "@editorjs/header": "^2.8.7",
+    "@editorjs/image": "^2.9.3",
+    "@editorjs/inline-code": "^1.5.1",
+    "@editorjs/list": "^1.10.0",
+    "@editorjs/marker": "^1.4.0",
+    "@editorjs/quote": "^2.7.2",
+    "@flaticon/flaticon-uicons": "^3.3.1",
+    "@nprou/editorjs": "^2.23.2",
+    "axios": "^1.7.7",
+    "firebase": "^10.13.1",
+    "framer-motion": "^11.3.31",
+    "mongodb": "^6.8.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-intersection-observer": "^9.13.0",
+    "react-router-dom": "^6.26.1",
+    "react-spinners": "^0.14.1",
+    "uuidv4": "^6.2.13"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
+    "daisyui": "^4.12.10",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.3",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.7",
+    "postcss": "^8.4.40",
+    "tailwindcss": "^3.4.7",
+    "vite": "^5.3.4",
+    "vite-plugin-compression": "^0.5.1"
+  }
+}
