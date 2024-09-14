@@ -17,7 +17,7 @@ const homePage = () => {
 	let [trendingBlogs, setTrendingBlogs] = useState(null)
 	let [pageState, setPageState] = useState("Home")
 	let [currentPage, setCurrentPage] = useState(1)
-	let [itemsPerPage] = useState(7)
+	let [itemsPerPage] = useState(30)
 
 	let categories = [
 		"All",
