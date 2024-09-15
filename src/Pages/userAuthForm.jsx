@@ -1,6 +1,6 @@
 import { useContext, useRef } from "react"
 import Animation from "../common/pageAnimation"
-import { Link, Navigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import InputBox from "../components/input"
 import googleIcon from "/assets/google.png"
 import { Toaster, toast } from "react-hot-toast"
@@ -10,12 +10,14 @@ import { UserContext } from "../App"
 import { AuthWithGoogle } from "../common/firebase"
 
 const UserAuthForm = ({ type }) => {
+	const navigate = useNavigate()
 	let {
 		userAuth: { access_token },
 		setUserAuth,
 	} = useContext(UserContext)
 
 	const userAuthThroughServer = (serverRoute, formdata) => {
+		console.log("Attempting to authenticate...")
 		axios
 			.post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formdata, {
 				headers: {
@@ -25,9 +27,19 @@ const UserAuthForm = ({ type }) => {
 			.then(({ data }) => {
 				storeInSession("user", JSON.stringify(data))
 				setUserAuth(data)
+
+				if (serverRoute === "/signUp") {
+					toast.success("Signup successful! Welcome to our community.")
+				} else {
+					toast.success("Login successful! Welcome back.")
+				}
+
+				setTimeout(() => {
+					navigate("/")
+				}, 4000)
 			})
 			.catch((error) => {
-				console.error("Error detail dari server:", error.response || error) // Tambahkan ini
+				console.error("Error detail dari server:", error.response || error)
 				if (error.response) {
 					toast.error(error.response.data.error)
 				} else {
@@ -51,13 +63,13 @@ const UserAuthForm = ({ type }) => {
 		for (let [key, value] of form.entries()) {
 			formdata[key] = value
 		}
-		let { fullname, email, password } = formdata
+		let { username, email, password } = formdata
 
 		//form validation
 
-		if (fullname) {
-			if (fullname.length < 3) {
-				return toast.error("Fullname must be at least 3 characters")
+		if (username) {
+			if (username.length < 3) {
+				return toast.error("Username must be at least 3 characters")
 			}
 		}
 
@@ -112,9 +124,9 @@ const UserAuthForm = ({ type }) => {
 
 					{type != "signIn" ? (
 						<InputBox
-							name="fullname"
+							name="username"
 							type="text"
-							placeholder="Full Name"
+							placeholder="Username"
 							icon="fi-rr-user"
 						/>
 					) : (
