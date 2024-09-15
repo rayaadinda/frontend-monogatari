@@ -145,7 +145,7 @@ const BlogPost = () => {
 						/>
 						<p className="">
 							<span className="underline capitalize">
-								{post.author.personal_info.fullname}
+								{post.author.personal_info.username}
 							</span>{" "}
 							<br />
 							<span className="text-dark-grey">
