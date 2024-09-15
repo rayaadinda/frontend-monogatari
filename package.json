@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.651.1",
+    "@aws-sdk/s3-request-presigner": "^3.651.1",
     "@editorjs/code": "^2.9.0",
     "@editorjs/editorjs": "^2.30.5",
     "@editorjs/embed": "^2.7.4",
@@ -21,6 +23,7 @@
     "@editorjs/quote": "^2.7.2",
     "@flaticon/flaticon-uicons": "^3.3.1",
     "@nprou/editorjs": "^2.23.2",
+    "@vercel/analytics": "^1.3.1",
     "axios": "^1.7.7",
     "firebase": "^10.13.1",
     "framer-motion": "^11.3.31",
