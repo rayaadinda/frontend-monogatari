@@ -10,6 +10,8 @@ import SearchPage from "./Pages/SearchPage"
 import SearchUserPage from "./Pages/SearchUserPage" // Impor SearchUserPage
 import NotFound from "./Pages/NotFound"
 import ProfilePage from "./Pages/ProfilePage"
+import { Analytics } from "@vercel/analytics/react"
+import { Toaster } from "react-hot-toast"
 
 export const UserContext = createContext({})
 
@@ -43,6 +45,31 @@ const App = () => {
 					<Route path="*" element={<NotFound />} />
 				</Route>
 			</Routes>
+			<Analytics />
+			<Toaster
+				position="top-center"
+				reverseOrder={false}
+				gutter={8}
+				containerClassName=""
+				containerStyle={{}}
+				toastOptions={{
+					// Define default options
+					className: "",
+					duration: 5000,
+					style: {
+						background: "#363636",
+						color: "#fff",
+					},
+					// Default options for specific types
+					success: {
+						duration: 3000,
+						theme: {
+							primary: "green",
+							secondary: "black",
+						},
+					},
+				}}
+			/>
 		</UserContext.Provider>
 	)
 }
