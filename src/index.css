@@ -54,6 +54,10 @@
 		@apply btn-dark bg-grey text-black;
 	}
 
+	.btn-delete {
+		@apply btn-dark bg-red text-black;
+	}
+
 	.input-box {
 		@apply w-[100%] rounded-md p-4 bg-grey pl-12 border border-grey focus:bg-transparent placeholder:text-black;
 	}
