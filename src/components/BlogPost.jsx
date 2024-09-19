@@ -6,6 +6,10 @@ import axios from "axios"
 import Loader from "./loader"
 import { getDay } from "../common/date" // Adjusted import for named export
 import { calculateMinReadTime } from "../utils/readTime" // Impor fungsi
+import { useContext } from "react"
+import { UserContext } from "../App"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-hot-toast"
 
 const BlogPost = () => {
 	const { id } = useParams()
@@ -15,7 +19,37 @@ const BlogPost = () => {
 		triggerOnce: true,
 		threshold: 0.1,
 	})
-	const [publishedAt, setPublishedAt] = useState(null) // Add state for publishedAt
+	const [publishedAt, setPublishedAt] = useState(null)
+	const { userAuth } = useContext(UserContext)
+	const navigate = useNavigate()
+	const [showDropdown, setShowDropdown] = useState(false)
+
+	const handleDeletePost = async () => {
+		if (!userAuth.access_token) {
+			toast.error("You must be logged in to delete a post")
+			return
+		}
+
+		try {
+			await axios.delete(
+				`${import.meta.env.VITE_SERVER_DOMAIN}/delete-blog/${id}`,
+				{
+					headers: {
+						Authorization: `Bearer ${userAuth.access_token}`,
+					},
+				}
+			)
+			toast.success("Blog post deleted successfully")
+			navigate("/")
+		} catch (error) {
+			console.error("Error deleting blog post:", error)
+			if (error.response && error.response.status === 403) {
+				toast.error("You are not authorized to delete this blog post")
+			} else {
+				toast.error("An error occurred while deleting the blog post")
+			}
+		}
+	}
 
 	const variants = {
 		hidden: { opacity: 0, y: 50 },
@@ -137,7 +171,7 @@ const BlogPost = () => {
 				>
 					{post.title}
 				</motion.h2>
-				<div className="flex max-sm:flex-col justify-between my-8">
+				<div className="flex max-sm:flex-col justify-between my-8 relative">
 					<div className="flex gap-5 items-start">
 						<img
 							src={post.author.personal_info.profile_img}
@@ -153,6 +187,26 @@ const BlogPost = () => {
 							</span>{" "}
 						</p>
 					</div>
+					{userAuth.username === post.author.personal_info.username && (
+						<div className="absolute right-0 top-0">
+							<button
+								onClick={() => setShowDropdown(!showDropdown)}
+								className="text-3xl focus:outline-none"
+							>
+								⋮
+							</button>
+							{showDropdown && (
+								<div className="absolute right-0 mt-2 w-24 bg-white text-center text-red rounded-md shadow-lg z-10">
+									<button
+										onClick={handleDeletePost}
+										className="block font-medium px-2 py-2 text-sm"
+									>
+										Delete Post
+									</button>
+								</div>
+							)}
+						</div>
+					)}
 				</div>
 				<motion.img
 					src={post.banner || post.image}
