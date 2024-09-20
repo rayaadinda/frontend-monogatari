@@ -23,13 +23,17 @@ const BlogPost = () => {
 	const { userAuth } = useContext(UserContext)
 	const navigate = useNavigate()
 	const [showDropdown, setShowDropdown] = useState(false)
+	const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-	const handleDeletePost = async () => {
+	const handleDeletePost = () => {
 		if (!userAuth.access_token) {
 			toast.error("You must be logged in to delete a post")
 			return
 		}
+		setShowDeleteModal(true)
+	}
 
+	const confirmDeletePost = async () => {
 		try {
 			await axios.delete(
 				`${import.meta.env.VITE_SERVER_DOMAIN}/delete-blog/${id}`,
@@ -48,6 +52,8 @@ const BlogPost = () => {
 			} else {
 				toast.error("An error occurred while deleting the blog post")
 			}
+		} finally {
+			setShowDeleteModal(false)
 		}
 	}
 
@@ -196,12 +202,15 @@ const BlogPost = () => {
 								⋮
 							</button>
 							{showDropdown && (
-								<div className="absolute right-0 mt-2 w-24 bg-white text-center text-red rounded-md shadow-lg z-10">
+								<div className="absolute right-0 mt-2 w-24 bg-white text-center rounded-md shadow-lg z-10">
 									<button
 										onClick={handleDeletePost}
-										className="block font-medium px-2 py-2 text-sm"
+										className="block font-medium px-2 text-red py-2 text-sm"
 									>
 										Delete Post
+									</button>
+									<button className="block font-medium px-2 py-2 text-sm">
+										Edit Post
 									</button>
 								</div>
 							)}
@@ -229,6 +238,31 @@ const BlogPost = () => {
 			>
 				{renderContent(post.content)}
 			</motion.div>
+
+			{showDeleteModal && (
+				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+					<div className="bg-white p-6 rounded-lg shadow-lg">
+						<h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
+						<p className="mb-4 text-center">
+							Are you sure you want to delete this post?
+						</p>
+						<div className="flex justify-center gap-4">
+							<button
+								onClick={() => setShowDeleteModal(false)}
+								className="px-4 py-2 bg-grey rounded-md"
+							>
+								Cancel
+							</button>
+							<button
+								onClick={confirmDeletePost}
+								className="px-4 py-2 bg-red text-white rounded-md"
+							>
+								Delete
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 		</motion.article>
 	)
 }
