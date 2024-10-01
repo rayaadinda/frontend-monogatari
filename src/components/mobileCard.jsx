@@ -34,8 +34,11 @@ const MobileCard = ({ content, author }) => {
 				/>
 				<div>
 					<p className="text-xl font-semibold mr-4">
-						@{username}{" "}
-						<span className="text-base font-normal">{getDay(publishedAt)}</span>
+						@{username}
+						<span className="text-base font-normal">
+							{" "}
+							∙ {getDay(publishedAt)}
+						</span>
 					</p>
 					<p className="text-sm text-gray-500">in Jakarta</p>
 				</div>
