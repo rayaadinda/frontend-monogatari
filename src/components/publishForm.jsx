@@ -48,7 +48,9 @@ const PublishForm = () => {
 		if (e.keyCode == 13 || e.keyCode == 188) {
 			e.preventDefault()
 
-			let tag = e.target.value
+			let tag = e.target.value.trim()
+			// Remove any "#" at the beginning of the tag
+			tag = tag.replace(/^#/, "")
 
 			if (tags.length < tagLimit) {
 				if (!tags.includes(tag) && tag.length) {
@@ -71,18 +73,8 @@ const PublishForm = () => {
 			return toast.error("write blog title before publish")
 		}
 
-		if (!des.length || des.length > charLimit) {
-			return toast.error(
-				`write blog description before publish ${charLimit} characters to publish`
-			)
-		}
-
 		if (!banner.length) {
-			return toast.error("Please fill all the fields")
-		}
-
-		if (!tags.length) {
-			return toast.error("Please add at least 1 tag")
+			return toast.error("Please upload a banner image")
 		}
 
 		let loadingToast = toast.loading("Publishing...")
@@ -158,7 +150,9 @@ const PublishForm = () => {
 						className="input-box pl-4"
 						onChange={handleBlogTitle}
 					/>
-					<p className="text-dark-grey mb-2 mt-9">Short description</p>
+					<p className="text-dark-grey mb-2 mt-9">
+						Short description (Optional)
+					</p>
 
 					<textarea
 						maxLength={charLimit}
@@ -173,7 +167,7 @@ const PublishForm = () => {
 						{charLimit - des.length} characters left
 					</p>
 
-					<p>Topics - (Help is searching and rangking your blog) </p>
+					<p>Topics - (Optional) (Dont Use "#") </p>
 
 					<div className="relative input-box pl-2 py-2 pb-4">
 						<input
