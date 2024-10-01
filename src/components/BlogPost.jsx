@@ -209,9 +209,6 @@ const BlogPost = () => {
 									>
 										Delete Post
 									</button>
-									<button className="block font-medium px-2 py-2 text-sm">
-										Edit Post
-									</button>
 								</div>
 							)}
 						</div>
