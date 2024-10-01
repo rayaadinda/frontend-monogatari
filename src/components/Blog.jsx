@@ -199,26 +199,6 @@ const homePage = () => {
 								})}
 							</div>
 						</div>
-
-						<div>
-							<h1 className="font-medium text-xl mb-8">
-								Trending <i className="fi fi-rr-arrow-trend-up"></i>
-							</h1>
-							{trendingBlogs == null ? (
-								<Loader />
-							) : (
-								trendingBlogs.map((blog, i) => {
-									return (
-										<Animation
-											transition={{ duration: 1, delay: i * 0.1 }}
-											key={i}
-										>
-											<MinimalBlog blog={blog} index={i} />
-										</Animation>
-									)
-								})
-							)}
-						</div>
 					</div>
 				</div>
 			</section>
