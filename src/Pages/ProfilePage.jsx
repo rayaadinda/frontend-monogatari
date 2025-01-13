@@ -274,7 +274,7 @@ const ProfilePage = () => {
                      <DialogTrigger asChild>
        					 <Button variant="outline">Edit Profile</Button>
       					</DialogTrigger>
-                    <DialogContent className="sm:max-w-[225px]">
+                    <DialogContent className="sm:max-w-[425px]">
                       <DialogHeader>
                         <DialogTitle className="text-base font-bold">Edit Profile</DialogTitle>
                         <DialogDescription>
