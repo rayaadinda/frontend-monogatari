@@ -36,6 +36,7 @@ const App = () => {
 					<Route path="/signUp" element={<UserAuthForm type="signUp" />} />
 					<Route path="/search/:query" element={<SearchPage />} />
 					<Route path="/user/:username" element={<ProfilePage />} />
+					<Route path="/profile/:id" element={<ProfilePage />} />
 					<Route path="/blog" element={<Blog />} />
 					<Route path="/blog/:id" element={<BlogPost />} />
 					<Route

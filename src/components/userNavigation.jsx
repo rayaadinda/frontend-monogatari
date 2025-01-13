@@ -7,7 +7,7 @@ import { removeFromSession } from "../common/session"
 const UserNavigation = () => {
 	console.log("UserNavigation dirender")
 	const {
-		userAuth: { username },
+		userAuth: { username, _id, access_token },
 		setUserAuth,
 	} = useContext(UserContext)
 
@@ -28,7 +28,7 @@ const UserNavigation = () => {
 					<p>Write</p>
 				</Link>
 
-				<Link to={`/user/${username}`} className="link pl-8 py-4">
+				<Link to={`/profile/${_id}`} className="link pl-8 py-4">
 					Profile
 				</Link>
 				<Link to="/dashboard/notifications" className="link pl-8 py-4">
