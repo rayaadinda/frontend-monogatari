@@ -204,6 +204,7 @@ const ProfilePage = () => {
   }
 
   const handleSubmit = async () => {
+    const loadingToast = toast.loading("Updating profile...");
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_SERVER_DOMAIN}/update-profile`,
@@ -211,16 +212,30 @@ const ProfilePage = () => {
         {
           headers: {
             Authorization: `Bearer ${userAuth.access_token}`,
+            'Content-Type': 'application/json'
           },
         }
-      )
+      );
 
-      toast.success("Profile updated successfully")
-      navigate(0)
+      if (response.data.success) {
+        toast.success("Profile updated successfully", {
+          id: loadingToast
+        });
+        // Update local user data
+        setUserAuth(prev => ({
+          ...prev,
+          username: formData.username,
+          email: formData.email
+        }));
+        navigate(0);
+      }
     } catch (error) {
-      toast.error("Failed to update profile")
+      toast.error(
+        error.response?.data?.error || "Failed to update profile",
+        { id: loadingToast }
+      );
     }
-  }
+  };
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>
