@@ -30,15 +30,12 @@ const ProfilePage = () => {
   })
 
   useEffect(() => {
-    console.log("User Auth:", userAuth)
-    console.log("Profile ID:", profileId)
     fetchProfile(profileId || userAuth._id)
   }, [profileId, userAuth._id])
 
   const fetchProfile = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/users/profile/${id}`)
-      console.log("Profile Data:", response.data)
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/api/users/profile/${id}`)
       setProfile(response.data)
       setFormData({
         username: response.data.personal_info.username,
@@ -56,7 +53,7 @@ const ProfilePage = () => {
       setHeaderPhotoPreviewUrl(response.data.personal_info.header_img)
       setLoading(false)
     } catch (error) {
-      console.error("Error fetching profile:", error)
+      toast.error("Error fetching profile")
       setLoading(false)
     }
   }
@@ -97,7 +94,7 @@ const ProfilePage = () => {
     const loadingToast = toast.loading("Updating profile picture...")
 
     try {
-      const urlResponse = await axios.get("http://localhost:3000/image-upload-url", {
+      const urlResponse = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/image-upload-url`, {
         headers: {
           Authorization: `Bearer ${userAuth.access_token}`,
         },
@@ -112,7 +109,7 @@ const ProfilePage = () => {
       })
 
       const response = await axios.post(
-        "http://localhost:3000/update-profile-image",
+        `${import.meta.env.VITE_SERVER_DOMAIN}/update-profile-image`,
         { profileImage: imageUrl },
         {
           headers: {
@@ -121,33 +118,17 @@ const ProfilePage = () => {
         }
       )
 
-      if (response.data.success) {
-        setPreviewUrl(imageUrl)
-        setUserAuth((prev) => ({
-          ...prev,
-          profile_img: imageUrl,
-        }))
-        const sessionUser = JSON.parse(sessionStorage.getItem("user"))
-        sessionStorage.setItem(
-          "user",
-          JSON.stringify({
-            ...sessionUser,
-            profile_img: imageUrl,
-          })
-        )
+      setPreviewUrl(imageUrl)
+      setUserAuth((prev) => ({
+        ...prev,
+        profile_img: imageUrl,
+      }))
 
-        toast.success("Profile picture updated successfully", {
-          id: loadingToast,
-        })
-        fetchProfile(profileId || userAuth._id)
-      } else {
-        throw new Error(response.data.error || "Failed to update profile picture")
-      }
-    } catch (err) {
-      console.error("Profile picture update error:", err)
-      toast.error(err.response?.data?.error || "Failed to update profile picture", {
-        id: loadingToast,
-      })
+      toast.dismiss(loadingToast)
+      toast.success("Profile picture updated successfully")
+    } catch (error) {
+      toast.dismiss(loadingToast)
+      toast.error("Failed to update profile picture")
     }
   }
 
@@ -168,7 +149,7 @@ const ProfilePage = () => {
     const loadingToast = toast.loading("Updating header photo...")
 
     try {
-      const urlResponse = await axios.get("http://localhost:3000/image-upload-url", {
+      const urlResponse = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/image-upload-url`, {
         headers: {
           Authorization: `Bearer ${userAuth.access_token}`,
         },
@@ -183,7 +164,7 @@ const ProfilePage = () => {
       })
 
       const response = await axios.post(
-        "http://localhost:3000/update-header-image",
+        `${import.meta.env.VITE_SERVER_DOMAIN}/update-header-image`,
         { headerImage: imageUrl },
         {
           headers: {
@@ -225,7 +206,7 @@ const ProfilePage = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/update-profile",
+        `${import.meta.env.VITE_SERVER_DOMAIN}/update-profile`,
         formData,
         {
           headers: {
@@ -234,15 +215,10 @@ const ProfilePage = () => {
         }
       )
 
-      if (response.data.success) {
-        toast.success("Profile updated successfully")
-        fetchProfile(profileId || userAuth._id)
-      } else {
-        throw new Error(response.data.error || "Failed to update profile")
-      }
-    } catch (err) {
-      console.error("Profile update error:", err)
-      toast.error(err.response?.data?.error || "Failed to update profile")
+      toast.success("Profile updated successfully")
+      navigate(0)
+    } catch (error) {
+      toast.error("Failed to update profile")
     }
   }
 
